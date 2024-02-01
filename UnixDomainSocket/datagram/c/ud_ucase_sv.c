@@ -11,26 +11,22 @@ main(int argc, char *argv[])
 
     sfd = socket(AF_UNIX, SOCK_DGRAM, 0);       /* Create server socket */
     if (sfd == -1)
-       {}
-        // errExit("socket");
+         printf("socket");
 
     /* Construct well-known address and bind server socket to it */
 
     if (strlen(SV_SOCK_PATH) > sizeof(svaddr.sun_path) - 1)
-        {}
-        // fatal("Server socket path too long: %s", SV_SOCK_PATH);
+         printf("Server socket path too long: %s", SV_SOCK_PATH);
 
     if (remove(SV_SOCK_PATH) == -1 && errno != ENOENT)
-        {}
-        // errExit("remove-%s", SV_SOCK_PATH);
+         printf("remove-%s", SV_SOCK_PATH);
 
     memset(&svaddr, 0, sizeof(struct sockaddr_un));
     svaddr.sun_family = AF_UNIX;
     strncpy(svaddr.sun_path, SV_SOCK_PATH, sizeof(svaddr.sun_path) - 1);
 
     if (bind(sfd, (struct sockaddr *) &svaddr, sizeof(struct sockaddr_un)) == -1)
-        {}
-        // errExit("bind");
+         printf("bind");
 
     /* Receive messages, convert to uppercase, and return to client */
 
@@ -39,8 +35,7 @@ main(int argc, char *argv[])
         numBytes = recvfrom(sfd, buf, BUF_SIZE, 0,
                             (struct sockaddr *) &claddr, &len);
         if (numBytes == -1)
-            {}
-            // errExit("recvfrom");
+             printf("recvfrom");
 
         printf("Server received %ld bytes from %s\n", (long) numBytes,
                 claddr.sun_path);
@@ -50,7 +45,6 @@ main(int argc, char *argv[])
 
         if (sendto(sfd, buf, numBytes, 0, (struct sockaddr *) &claddr, len) !=
                 numBytes)
-            {}
-            // fatal("sendto");
+             printf("sendto");
     }
 }
