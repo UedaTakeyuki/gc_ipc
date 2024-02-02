@@ -5,6 +5,9 @@ import (
 	"log"
 	"net"
 	"os"
+	"time"
+
+	"github.com/UedaTakeyuki/erapse"
 )
 
 func main() {
@@ -17,13 +20,16 @@ func main() {
 	}
 	defer os.Remove("/tmp/unixdomaincli")
 
-	_, err = conn.Write([]byte("hello"))
-	if err != nil {
-		panic(err)
-	}
+	/*
+		_, err = conn.Write([]byte("hello"))
+		if err != nil {
+			panic(err)
+		}
+	*/
 	buff := make([]byte, 10)
 	var n int
-	n, err = conn.Read(buff)
+	n, err = writeAndRead(conn, &buff)
+	//	n, err = conn.Read(buff)
 	if err != nil {
 		fmt.Printf("server() read socket failed with err: %v\n", err)
 	} else {
@@ -31,4 +37,15 @@ func main() {
 		log.Println(string(buff[:n]))
 	}
 	conn.Close()
+}
+
+func writeAndRead(conn net.Conn, buff *[]byte) (n int, err error) {
+	defer erapse.ShowErapsedTIme(time.Now())
+
+	_, err = conn.Write([]byte("hello"))
+	if err != nil {
+		panic(err)
+	}
+	n, err = conn.Read(*buff)
+	return
 }
