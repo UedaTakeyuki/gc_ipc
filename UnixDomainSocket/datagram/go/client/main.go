@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/binary"
 	"fmt"
 	"log"
 	"net"
@@ -42,10 +43,17 @@ func main() {
 func writeAndRead(conn net.Conn, buff *[]byte) (n int, err error) {
 	defer erapse.ShowErapsedTIme(time.Now())
 
-	_, err = conn.Write([]byte("hello"))
+	_, err = conn.Write(getNowInNanoSec())
 	if err != nil {
 		panic(err)
 	}
 	n, err = conn.Read(*buff)
+	return
+}
+
+func getNowInNanoSec() (buf []byte) {
+	now := time.Now().UnixNano()
+	buf = make([]byte, 8)
+	binary.LittleEndian.PutUint64(buf, uint64(now))
 	return
 }
