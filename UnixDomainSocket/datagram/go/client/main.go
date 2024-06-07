@@ -11,6 +11,8 @@ import (
 	"github.com/UedaTakeyuki/erapse"
 )
 
+var now int64
+
 func main() {
 	socketType := "unixgram" // or "unixgram" or "unixpacket"
 	laddr := net.UnixAddr{"/tmp/unixdomaincli", socketType}
@@ -21,12 +23,6 @@ func main() {
 	}
 	defer os.Remove("/tmp/unixdomaincli")
 
-	/*
-		_, err = conn.Write([]byte("hello"))
-		if err != nil {
-			panic(err)
-		}
-	*/
 	buff := make([]byte, 10)
 	var n int
 	n, err = writeAndRead(conn, &buff)
@@ -52,7 +48,7 @@ func writeAndRead(conn net.Conn, buff *[]byte) (n int, err error) {
 }
 
 func getNowInNanoSec() (buf []byte) {
-	now := time.Now().UnixNano()
+	now = time.Now().UnixNano()
 	buf = make([]byte, 8)
 	binary.LittleEndian.PutUint64(buf, uint64(now))
 	return
