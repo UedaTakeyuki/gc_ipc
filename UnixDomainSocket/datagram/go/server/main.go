@@ -1,3 +1,4 @@
+// refer https://gist.github.com/szaydel/423d89bc9fe11d85d332
 package main
 
 import (
@@ -32,6 +33,6 @@ func elapse(clientTimeLog []byte) {
 	defer erapse.ShowErapsedTIme(time.Now())
 	clientTimeUint64 := int64(binary.LittleEndian.Uint64(clientTimeLog))
 	clientUnixTime := time.Unix(0, clientTimeUint64)
-	elapseNano := time.Now().Sub(clientUnixTime).Microseconds()
+	elapseNano := time.Now().Sub(clientUnixTime).Nanoseconds()
 	log.Println(elapseNano, "ns")
 }
