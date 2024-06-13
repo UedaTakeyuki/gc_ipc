@@ -15,7 +15,8 @@ import (
 var now int64
 
 func main() {
-	socketType := "unixgram" // or "unixgram" or "unixpacket"
+	socketType := "unixgram"        // or "unixgram" or "unixpacket"
+	os.Remove("/tmp/unixdomaincli") // error can be ignored
 	laddr := net.UnixAddr{"/tmp/unixdomaincli", socketType}
 	conn, err := net.DialUnix(socketType, &laddr, /*can be nil*/
 		&net.UnixAddr{"/tmp/ud_ucase", socketType})
