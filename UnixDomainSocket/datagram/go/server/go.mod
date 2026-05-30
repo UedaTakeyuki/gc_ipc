@@ -1,5 +1,5 @@
 module github.com/UedaTakeyuki/gc_ipc/UnixDomainSocket/datagram/go/server
 
-go 1.22.3
+go 1.22
 
 require github.com/UedaTakeyuki/erapse v0.0.0-20240531110635-a312c8fdf097 // indirect
